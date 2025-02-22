@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ medicine.name }} - Viper Pharmacy</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom, #0dbd9d, #8d2f94);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #006666;
+            padding: 10px 0;
+            text-align: center;
+        }
+        header a {
+            color: white;
+            font-size: 18px;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        header a:hover {
+            color: #ffcc00;
+        }
+        .medicine-detail {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 40px;
+            background: linear-gradient(to bottom, #8d2f94, #0dbd9d);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 1px solid #ffffff;
+        }
+        .medicine-detail img {
+            width: 350px;
+            height: 350px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        .medicine-detail img:hover {
+            transform: scale(1.1);
+        }
+        .medicine-detail h1 {
+            font-size: 36px;
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .details, .description {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #006666;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        .details h3, .description h3 {
+            font-size: 20px;
+            color: #008080;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .details p, .description p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .available {
+            font-size: 18px;
+            color: #fff;
+            font-weight: bold;
+            background-color: #28a745;
+            padding: 10px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 15px;
+        }
+        .unavailable {
+            font-size: 18px;
+            color: #fff;
+            font-weight: bold;
+            background-color: #dc3545;
+            padding: 10px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 15px;
+        }
+        .price {
+            font-size: 20px;
+            color: #006400;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 20px;
+            background: #3b0a0a;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        .back-btn:hover {
+            background: #071d42;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    
+</header>
+
+<div class="medicine-detail">
+    <img src="{{ medicine.image.url }}" alt="{{ medicine.name }}">
+    <h1>{{ medicine.name }}</h1>
+
+    <div class="details">
+        <h3>Medicine Details</h3>
+        <p><strong>Generic Name:</strong> {{ medicine.generic_name }}</p>
+        <p><strong>Generic Code:</strong> {{ medicine.generic_code }}</p>
+        <p><strong>Effective Dose:</strong> {{ medicine.effective_dose }} mg</p>
+        <p><strong>Pharmaceutical Form:</strong> {{ medicine.pharmaceutical_form }}</p>
+        
+        
+        {% if medicine.available %}
+            <div class="available">Available</div>
+        {% else %}
+            <div class="unavailable">Unavailable</div>
+        {% endif %}
+    </div>
+
+    <div class="description">
+        <h3>Description</h3>
+        <p>{{ medicine.description }}</p>
+    </div>
+
+    <a href="{% url 'home' %}" class="back-btn">Back to Medicine List</a>
+</div>
+
+</body>
+</html>

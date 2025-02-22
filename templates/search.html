@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results | Viper Pharmacy</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom, #f4f4f4, #dcdcdc);
+            color: #333;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #008080;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .logo-container img {
+            width: 80px;
+            height: 80px;
+            margin-right: 10px;
+        }
+        .logo-text {
+            font-size: 28px;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .nav {
+            display: flex;
+            gap: 15px;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav a:hover {
+            color: #f4f4f4;
+        }
+        .search-box {
+            margin: 20px auto;
+            text-align: center;
+        }
+        .search-box form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-box input {
+            width: 50%;
+            padding: 12px;
+            font-size: 18px;
+            border: 2px solid #008080;
+            border-radius: 5px;
+            outline: none;
+        }
+        .search-box button {
+            padding: 12px 20px;
+            font-size: 18px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid #008080;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+        .search-box button:hover {
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 10px rgba(0, 128, 128, 0.5);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .medicine-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+        .medicine-info {
+            flex: 1;
+        }
+        .medicine-item h3 {
+            margin: 0;
+            color: #008080;
+        }
+        .medicine-item p {
+            margin: 5px 0;
+        }
+        .medicine-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-left: 20px;
+        }
+        .more-info {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #008080;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .more-info:hover {
+            background: #006666;
+        }
+        .return-home {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background: #da0404;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .return-home:hover {
+            background: #0729cb;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="/static/img/viper.jpg" alt="Viper Pharmacy Logo">
+            <div class="logo-text">Viper Pharmacy</div>
+        </div>
+        <div class="nav">
+            <a href="/">Home</a>
+            <a href="#" onclick="openContactUs()">Contact Us</a>
+            <a href="#" onclick="openSignUp()">Sign Up</a>
+            <a href="#" onclick="openLogIn()">Log In</a>
+            <a href="#" onclick="openOrderForm()">Order Registration</a>
+        </div>
+    </header>
+
+    <div class="search-box">
+        <form method="get" action="{% url 'search' %}">
+            <input type="text" name="query" placeholder="Search in Pharmacy ...">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h2>Search Results</h2>
+        {% if medicines %}
+            {% for medicine in medicines %}
+                <div class="medicine-item">
+                    <div class="medicine-info">
+                        <h3>{{ medicine.name }}</h3>
+                        <p><strong>Dose:</strong> {{ medicine.effective_dose }}</p>
+                        <p><strong>Pharmaceutical Form:</strong> {{ medicine.pharmaceutical_form }}</p>
+                        <a href="#" class="more-info">More Information</a>
+                    </div>
+                    <img src="{{ medicine.image.url }}" alt="{{ medicine.name }}" class="medicine-image">
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+    </div>
+
+    <a href="/" class="return-home">Return to Home</a>
+ <div id="contact-modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#23292d; color:#ffffff; width:300px; padding:20px; border-radius:10px;">
+        <h2 style="text-align:center;">Contact Us</h2>
+        <form method="post" action="{% url 'contact' %}">
+            {% csrf_token %}
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required style="width:100%; margin-bottom:10px; padding:5px;">
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required style="width:100%; margin-bottom:10px; padding:5px;">
+
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required style="width:100%; padding:5px;"></textarea>
+
+            <button type="submit" style="margin-top:10px; padding:10px; background:#006400; color:#fff; border:none; border-radius:5px; width:48%;">Send</button>
+            <button type="button" onclick="closeContactUs()" style="margin-top:10px; padding:10px; background:#800000; color:#fff; border:none; border-radius:5px; width:48%; float:right;">Close</button>
+        </form>
+    </div>
+
+    <!-- LogIn Modal -->
+    <div id="login-modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#23292d; color:#ffffff; width:300px; padding:20px; border-radius:10px;">
+        <h2 style="text-align:center;">Log In</h2>
+        <form>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required style="width:100%; margin-bottom:10px; padding:5px;">
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required style="width:100%; margin-bottom:10px; padding:5px;">
+
+            <button type="submit" style="margin-top:10px; padding:10px; background:#006400; color:#fff; border:none; border-radius:5px; width:48%;">Log In</button>
+            <button type="button" onclick="closeLogIn()" style="margin-top:10px; padding:10px; background:#800000; color:#fff; border:none; border-radius:5px; width:48%; float:right;">Close</button>
+        </form>
+    </div>
+
+    <!-- SignUp Modal -->
+    <div id="signup-modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#23292d; color:#ffffff; width:300px; padding:20px; border-radius:10px;">
+        <h2 style="text-align:center;">Sign Up</h2>
+        <form>
+            <label for="new-username">Username:</label>
+            <input type="text" id="new-username" name="new-username" required style="width:100%; margin-bottom:10px; padding:5px;">
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required style="width:100%; margin-bottom:10px; padding:5px;">
+
+            <label for="new-password">Password:</label>
+            <input type="password" id="new-password" name="new-password" required style="width:100%; margin-bottom:10px; padding:5px;">
+
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" name="confirm-password" required style="width:100%; margin-bottom:10px; padding:5px;">
+
+            <!-- National Code Field -->
+            <label for="national-code">National Code:</label>
+            <input type="text" id="national-code" name="national-code" required style="width:100%; margin-bottom:10px; padding:5px;" pattern="\d{10}" title="Please enter a 10-digit national code">
+
+            <button type="submit" style="margin-top:10px; padding:10px; background:#006400; color:#fff; border:none; border-radius:5px; width:48%;">Sign Up</button>
+            <button type="button" onclick="closeSignUp()" style="margin-top:10px; padding:10px; background:#800000; color:#fff; border:none; border-radius:5px; width:48%; float:right;">Close</button>
+        </form>
+    </div>
+
+    <!-- Order Registration Modal -->
+    <div id="order-section" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#23292d; color:#ffffff; width:300px; padding:20px; border-radius:10px;">
+        <h2 style="text-align:center;"> Order</h2>
+        <form>
+        <label for="prescription">Enter 7-digit Prescription Code::</label>
+        <input type="text" id="prescription" name="prescription" required style="width:100%; margin-bottom:10px; padding:5px;">
+        <button type="submit" style="margin-top:10px; padding:10px; background:#006400; color:#fff; border:none; border-radius:5px; width:48%;">Prescription</button>
+        <button type="button" onclick="closeOrderForm()" style="margin-top:10px; padding:10px; background:#800000; color:#fff; border:none; border-radius:5px; width:48%; float:right;">Close</button>
+        </form>
+    </div>
+
+    <script>
+        function openContactUs() {
+            document.getElementById('contact-modal').style.display = 'block';
+        }
+
+        function closeContactUs() {
+            document.getElementById('contact-modal').style.display = 'none';
+        }
+
+        function openLogIn() {
+            document.getElementById('login-modal').style.display = 'block';
+            document.getElementById('signup-modal').style.display = 'none';
+        }
+
+        function closeLogIn() {
+            document.getElementById('login-modal').style.display = 'none';
+        }
+
+        function openSignUp() {
+            document.getElementById('signup-modal').style.display = 'block';
+            document.getElementById('login-modal').style.display = 'none';
+        }
+
+        function closeSignUp() {
+            document.getElementById('signup-modal').style.display = 'none';
+        }
+
+        function openOrderForm() {
+            document.getElementById('order-section').style.display = 'block';
+        }
+
+        function closeOrderForm() {
+            document.getElementById('order-section').style.display = 'none';
+        }
+
+        function submitPrescription() {
+            const code = document.getElementById('prescription-code').value;
+            if (code.match(/\d{7}/)) {
+                alert('Prescription submitted successfully!');
+            } else {
+                alert('Please enter a valid 7-digit prescription code.');
+            }
+        }
+    </script>
+
+</body>
+</html>

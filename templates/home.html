@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viper Pharmacy</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom, #f4f4f4, #dcdcdc);
+            color: #333;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #008080;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .logo-container img {
+            width: 100px;
+            height: 100px;
+            margin-right: 10px;
+        }
+        .logo-text {
+            font-size: 36px;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .nav {
+            display: flex;
+            gap: 15px;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav a:hover {
+            color: #f4f4f4;
+        }
+        .search-box {
+            margin: 20px auto;
+            text-align: center;
+        }
+        .search-box form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-box input {
+            width: 50%;
+            padding: 12px;
+            font-size: 18px;
+            border: 2px solid #008080;
+            border-radius: 5px;
+            outline: none;
+        }
+        .search-box button {
+            padding: 12px 20px;
+            font-size: 18px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid #008080;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+        .search-box button:hover {
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 10px rgba(0, 128, 128, 0.5);
+        }
+        .section {
+            margin: 20px;
+        }
+        .section h2 {
+            color: #008080;
+            border-bottom: 2px solid #006666;
+            padding-bottom: 5px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .medicine-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid #008080;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .medicine-item img {
+            width: 60px;
+            height: 60px;
+            margin-left: 15px;
+            border-radius: 5px;
+        }
+        .medicine-item .info {
+            flex: 1;
+        }
+        .medicine-item .info h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 500;
+        }
+        .medicine-item .info p {
+            margin: 5px 0 0;
+            font-size: 16px;
+        }
+
+        
+        .order-section {
+            display: none;
+            margin-top: 20px;
+        }
+        .order-section input {
+            padding: 10px;
+            font-size: 18px;
+            width: 60%;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #008080;
+        }
+        .order-section button {
+            padding: 12px 20px;
+            background-color: #006400;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .order-section button:hover {
+            background-color: #004d2b;
+        }
+        .medicine-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        padding: 20px;
+    }
+    .medicine-card {
+        background: white;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+    .medicine-card img {
+        width: 100px;
+        height: 100px;
+        border-radius: 5px;
+    }
+    .medicine-card h3 {
+        font-size: 18px;
+        margin: 10px 0;
+    }
+    .medicine-card p {
+        font-size: 14px;
+        color: #333;
+    }
+    .more-info {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 8px 12px;
+        background: #008080;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+    .more-info:hover {
+        background: #006666;
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="/static/img/viper.jpg" >
+            <div class="logo-text">Viper Pharmacy</div>
+        </div>
+        <div class="nav">
+            <a href="#">Home</a>
+            <a href="#" onclick="openContactUs()">ContactUs  </a>
+            <a href="#" onclick="openSignUp()"> SignUp  </a>
+            <a href="#" onclick="openLogIn()"> LogIn  </a>
+            <a href="{% url 'sign_out' %}"> LogOut  </a>
+            <a href="{% url 'order' %}"> OrderRegistration</a>
+        </div>
+    </header>
+
+    <div class="search-box">
+        <form method="get"  action={% url 'search' %}>
+            <input type="text" name="query" placeholder="Search in Pharmacy ...">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+   <div class="section">
+    <h2>Medicine List</h2>
+    <div class="medicine-grid">
+        {% for medicine in medicines %}
+        <div class="medicine-card">
+            <img src="{{ medicine.image.url }}" alt="{{ medicine.name }}">
+            <h3>{{ medicine.name }}</h3>
+            <p><strong>Dose:</strong> {{ medicine.effective_dose }}</p>
+            <p><strong>Pharmaceutical:</strong> {{ medicine.pharmaceutical_form }}</p>
+            <a href="{% url 'medicine_detail' medicine.id %}" class="more-info">More Information</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+    <!-- Contact Us Modal -->
+    <div id="contact-modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#23292d; color:#ffffff; width:300px; padding:20px; border-radius:10px;">
+        <h2 style="text-align:center;">Contact Us</h2>
+        <form method="post" action="{% url 'contact' %}">
+            {% csrf_token %}
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required style="width:100%; margin-bottom:10px; padding:5px;">
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required style="width:100%; margin-bottom:10px; padding:5px;">
+
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required style="width:100%; padding:5px;"></textarea>
+
+            <button type="submit" style="margin-top:10px; padding:10px; background:#006400; color:#fff; border:none; border-radius:5px; width:48%;">Send</button>
+            <button type="button" onclick="closeContactUs()" style="margin-top:10px; padding:10px; background:#800000; color:#fff; border:none; border-radius:5px; width:48%; float:right;">Close</button>
+        </form>
+    </div>
+
+    <!-- LogIn Modal -->
+    <div id="login-modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#23292d; color:#ffffff; width:300px; padding:20px; border-radius:10px;">
+        <h2 style="text-align:center;">Log In</h2>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required style="width:100%; margin-bottom:10px; padding:5px;">
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required style="width:100%; margin-bottom:10px; padding:5px;">
+
+            <button type="submit" style="margin-top:10px; padding:10px; background:#006400; color:#fff; border:none; border-radius:5px; width:48%;">LogIn</button>
+            <button type="button" onclick="closeLogIn()" style="margin-top:10px; padding:10px; background:#800000; color:#fff; border:none; border-radius:5px; width:48%; float:right;">Close</button>
+        </form>
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- SignUp Modal -->
+    <div id="signup-modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#23292d; color:#ffffff; width:300px; padding:20px; border-radius:10px;">
+        <h2 style="text-align:center;">Sign Up</h2>
+        <form action="{% url 'signup' %}" method="post">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required style="width:100%; margin-bottom:10px; padding:5px;">
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required style="width:100%; margin-bottom:10px; padding:5px;">
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required style="width:100%; margin-bottom:10px; padding:5px;">
+
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required style="width:100%; margin-bottom:10px; padding:5px;">
+            
+            <label for="national_code">National Code:</label>
+            <input type="text" id="national_code" name="national_code" required style="width:100%; margin-bottom:10px; padding:5px;" pattern="\d{10}" title="Please enter a 10-digit national code">
+
+            <button type="submit" style="margin-top:10px; padding:10px; background:#006400; color:#fff; border:none; border-radius:5px; width:48%;">Sign Up</button>
+            <button type="button" onclick="closeSignUp()" style="margin-top:10px; padding:10px; background:#800000; color:#fff; border:none; border-radius:5px; width:48%; float:right;">Close</button>
+        </form>
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</body>
+</html>

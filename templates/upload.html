@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Medicine</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom, #0e3d09, #501373);
+            color: #ffffff;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #040d3a;
+            box-shadow: 0px 4px 6px rgb(9, 9, 9);
+        }
+        .logo {
+            font-size: 26px;
+            color: #48f800;
+            font-weight: 600;
+        }
+        .nav {
+            display: flex;
+            gap: 15px;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav a:hover {
+            color: #16303a;
+        }
+        .upload-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #420202;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .upload-container h1 {
+            text-align: center;
+            color: #a0e70d;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        form button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #006400;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        form button:hover {
+            background-color: #1e90ff;
+        }
+        form input, form select, form textarea {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #1e90ff;
+            border-radius: 5px;
+            background-color: #333;
+            color: #ffffff;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        form input:focus, form select:focus, form textarea:focus {
+            outline: none;
+            border-color: #32CD32;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Viper Pharmacy</div>
+        <div class="nav">
+            <a href="/">Home</a>
+        </div>
+    </header>
+
+    <div class="upload-container">
+        <h1>Upload Medicine</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+</body>

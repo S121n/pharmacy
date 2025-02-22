@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drug Registration</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 12px;
+            width: 320px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 6px;
+            background-color: #333;
+            color: #e0e0e0;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 6px;
+            background-color: #6200ea;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #3700b3;
+        }
+
+        #drug-form {
+            display: none;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+            width: 320px;
+            text-align: left;
+        }
+
+        ul li {
+            background: #222;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Drug Registration</h2>
+
+    <div class="container">
+        <label>National ID:</label>
+        <input type="text" id="national_id" required>
+        <button onclick="setNationalId()">Submit National ID</button>
+    </div>
+
+    <div class="container" id="drug-form">
+        <label>Drug Name:</label>
+        <input type="text" id="drug_name">
+        
+        <label>Effective Dose:</label>
+        <input type="text" id="effective_dose">
+        
+        <label>Generic Code:</label>
+        <input type="text" id="generic_code">
+        
+        <button onclick="addDrug()">Next</button>
+        <button onclick="submitData()">Done</button>
+    </div>
+
+    <ul id="drug-list"></ul>
+
+    <script>
+        let nationalId = "";
+
+        function setNationalId() {
+            nationalId = $("#national_id").val();
+            if (nationalId) {
+                $("#drug-form").show();
+                $("#national_id").prop("disabled", true);
+            }
+        }
+
+        function addDrug() {
+            let name = $("#drug_name").val();
+            let effectiveDose = $("#effective_dose").val();
+            let genericCode = $("#generic_code").val();
+
+            if (name && effectiveDose && genericCode) {
+                $.post("", {
+                    national_id: nationalId,
+                    name: name,
+                    effective_dose: effectiveDose,
+                    generic_code: genericCode,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                }, function(data) {
+                    $("#drug-list").append("<li>" + name + " - " + genericCode + "</li>");
+                    $("#drug_name").val("");
+                    $("#effective_dose").val("");
+                    $("#generic_code").val("");
+                }).fail(function(response) {
+                    alert("Error: " + response.responseJSON.message);
+                });
+            } else {
+                alert("All fields are required!");
+            }
+        }
+
+        function submitData() {
+            alert("Data has been saved successfully!");
+            location.reload();
+        }
+    </script>
+
+</body>
+</html>

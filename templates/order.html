@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Drugs</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #121212;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            display: inline-block;
+            width: 50%;
+            min-width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #b9cae5;
+            margin-bottom: 20px;
+        }
+
+        input, button {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: none;
+            font-size: 16px;
+        }
+
+        input {
+            background: #2c2c2c;
+            color: #fff;
+        }
+
+        button {
+            background: #b9cae5;
+            color: #000;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #41942f;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .drug-list {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .drug-card {
+            background: #2c2c2c;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: 0.3s;
+        }
+
+        .drug-card:hover {
+            background: #383838;
+        }
+
+        .drug-card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+        }
+
+        .drug-info {
+            flex-grow: 1;
+            margin-left: 15px;
+        }
+
+        .drug-info strong {
+            font-size: 18px;
+            color: #ffcc00;
+        }
+
+        .unavailable {
+            background: rgba(255, 0, 0, 0.2);
+        }
+
+        .unavailable strong {
+            color: red;
+        }
+        
+    </style>
+</head>
+    
+<body>
+
+    <div class="container">
+        <h2>Check Available Drugs</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="national_id" placeholder="Enter National ID">
+            <button type="submit">Check</button>
+        </form>
+
+        {% if error_message %}
+            <p class="error">{{ error_message }}</p>
+        {% endif %}
+
+        <div class="drug-list">
+            {% if available_drugs %}
+                <h3 style="color: #4caf50;">Available Drugs:</h3>
+                {% for drug in available_drugs %}
+                    <div class="drug-card">
+                        <img src="{{ drug.image.url }}" alt="{{ drug.name }}">
+                        <div class="drug-info">
+                            <strong>{{ drug.name }}</strong> (Code: {{ drug.generic_code }})<br>
+                            <small>{{ drug.effective_dose }} mg - {{ drug.pharmaceutical_form }}</small><br>
+                            <small>{{ drug.description }}</small>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if unavailable_drugs %}
+                <h3 style="color: red;">Unavailable Drugs:</h3>
+                {% for drug in unavailable_drugs %}
+                    <div class="drug-card unavailable">
+                        <div class="drug-info">
+                            <strong>{{ drug.name }}</strong> (Code: {{ drug.generic_code }})<br>
+                            <small>{{ drug.effective_dose }} mg</small><br>
+                            <span style="color: red;">Not available in pharmacy</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+    </div>
+
+</body>
+</html>
