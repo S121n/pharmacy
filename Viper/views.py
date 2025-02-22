@@ -71,7 +71,6 @@ def order_page(request):
             try:
                 patient = Patient.objects.get(national_id=national_id)
 
-                # دریافت داروهای تجویز شده از مدل Drug
                 prescribed_drugs = Drug.objects.filter(patient=patient)
 
                 for drug in prescribed_drugs:
@@ -80,7 +79,7 @@ def order_page(request):
                     if medicine and medicine.available:
                         available_drugs.append(medicine)
                     else:
-                        unavailable_drugs.append(drug)  # دارویی که در داروخانه موجود نیست
+                        unavailable_drugs.append(drug)
 
                 if not available_drugs and not unavailable_drugs:
                     error_message = "No matching drugs found in the pharmacy!"
